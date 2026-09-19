@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: pinkroute-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pinkroute
+    ports:
+      - "5432:5432"
+    volumes:
+      - pinkroute_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pinkroute"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pinkroute_pgdata:
